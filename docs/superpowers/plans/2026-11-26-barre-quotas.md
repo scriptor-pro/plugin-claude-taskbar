@@ -32,7 +32,7 @@
 
 ---
 
-### Tâche 1 : état des barres (`etat.py`)
+### Task 1: état des barres (`etat.py`)
 
 **Files :**
 - Create : `etat.py`
@@ -73,7 +73,7 @@ Règles :
 - [ ] **Step 4 : relancer** — attendu : tous les tests OK.
 - [ ] **Step 5 : commit** `git add etat.py tests/test_etat.py && git commit -m "État d'affichage des barres de quotas"`
 
-### Tâche 2 : texte de l'infobulle (`infobulle.py`)
+### Task 2: texte de l'infobulle (`infobulle.py`)
 
 **Files :**
 - Create : `infobulle.py`
@@ -113,7 +113,7 @@ mis à jour à {last_update[:5]}
 - [ ] **Step 4 : relancer** — attendu : tous les tests OK.
 - [ ] **Step 5 : commit** `git commit -m "Texte de l'infobulle"` (avec les deux fichiers).
 
-### Tâche 3 : dessin du PNG (`dessin.py`)
+### Task 3: dessin du PNG (`dessin.py`)
 
 **Files :**
 - Create : `dessin.py`
@@ -139,7 +139,7 @@ Mise en page (spec + maquette) : colonne d'étiquettes « 5 h » / « 7 j » (Lu
 - [ ] **Step 4 : relancer** — attendu : OK. Ouvrir un PNG généré (`dessiner` sur `etat_base()`) et le regarder pour vérifier la netteté et la lisibilité à taille réelle.
 - [ ] **Step 5 : commit** `git commit -m "Dessin des barres en PNG"`.
 
-### Tâche 4 : point d'entrée genmon (`barre_quotas.py`)
+### Task 4: point d'entrée genmon (`barre_quotas.py`)
 
 **Files :**
 - Create : `barre_quotas.py` (exécutable, `#!/usr/bin/env python3`)
@@ -162,7 +162,7 @@ Mise en page (spec + maquette) : colonne d'étiquettes « 5 h » / « 7 j » (Lu
 - [ ] **Step 4 : relancer** toute la suite — attendu : OK. Puis `./barre_quotas.py` à la main : une ligne `<img>…</img><tool>…</tool>` avec les chiffres actuels de `current.json`.
 - [ ] **Step 5 : commit** `git commit -m "Point d'entrée genmon"`.
 
-### Tâche 5 : installation et mise en place dans le tableau de bord
+### Task 5: installation et mise en place dans le tableau de bord
 
 **Files :**
 - Create : `install.sh`, `README.md`
