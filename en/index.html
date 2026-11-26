@@ -81,7 +81,10 @@
     <h2>Install</h2>
     <ol class="etapes">
       <li>
-        <p>Install <strong>claude-monitor</strong>, the service behind the <a href="https://github.com/ideops832/ConkyClaudeCode">Conky Claude Code</a> widget. It checks your account every 5 minutes and writes the numbers to <code>~/.local/share/claude-monitor/current.json</code>. The bar reads that file and reuses its <code>query.py</code>, in the version that computes the weekly pace.</p>
+        <p>Install <strong>claude-monitor</strong>, the service behind the Conky Claude Code widget, from <a href="https://github.com/scriptor-pro/ConkyClaudeCode">its French version</a>: it computes the weekly pace the bar needs. It checks your account every 5 minutes and writes the numbers to <code>~/.local/share/claude-monitor/current.json</code>, which the bar reads.</p>
+        <pre><code>git clone https://github.com/scriptor-pro/ConkyClaudeCode.git
+cd ConkyClaudeCode
+./install.sh</code></pre>
       </li>
       <li>
         <p>Install the genmon plugin and Cairo for Python:</p>
@@ -101,7 +104,7 @@ cd plugin-claude-taskbar
   </main>
 
   <footer>
-    <p>Source code and issues: <a href="https://github.com/scriptor-pro/plugin-claude-taskbar">github.com/scriptor-pro/plugin-claude-taskbar</a>. Works with Xfce 4 and xfce4-genmon-plugin 4.1. Luciole typeface © Laurent Bourcellier and Jonathan Perez, CC BY 4.0 licence.</p>
+    <p>Source code and issues: <a href="https://github.com/scriptor-pro/plugin-claude-taskbar">github.com/scriptor-pro/plugin-claude-taskbar</a>. Original Conky widget: <a href="https://github.com/ideops832/ConkyClaudeCode">ideops832/ConkyClaudeCode</a>. Works with Xfce 4 and xfce4-genmon-plugin 4.1. Luciole typeface © Laurent Bourcellier and Jonathan Perez, CC BY 4.0 licence.</p>
   </footer>
 
   <script src="../assets/demo.js"></script>
