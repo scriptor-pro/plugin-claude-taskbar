@@ -1,0 +1,81 @@
+<style>
+  .panel{height:37px;background:linear-gradient(#b4b4b4,#9c9c9c);display:flex;align-items:center;gap:8px;padding:0 8px;font-family:Luciole,"B612",sans-serif;font-size:12px;color:#111;border-radius:3px;width:max-content}
+  .ico{width:22px;height:22px;border-radius:4px;background:#6d6d6d;opacity:.55}
+  .sep{width:1px;height:26px;background:#777;margin:0 2px}
+  .clock{line-height:1.05;text-align:center;font-size:12px}
+  .w{display:flex;align-items:center;gap:5px;padding:0 4px}
+  .two{display:flex;flex-direction:column;line-height:1.1;font-size:12px}
+  .bar{position:relative;background:#555;border:1px solid #1a1a1a;box-sizing:border-box}
+  .fill{position:absolute;left:0;top:0;bottom:0}
+  .mark{position:absolute;top:-1px;bottom:-1px;width:2px;background:#2e3440}
+  .tip{margin-top:10px;background:#2e3440;color:#d8dee9;font-family:Luciole,sans-serif;font-size:12px;padding:8px 10px;border-radius:4px;width:max-content;line-height:1.45}
+  .note{font-size:13px;margin-top:6px}
+</style>
+
+<h2>Quel aspect dans la barre du haut ?</h2>
+<p class="subtitle">Échelle réelle : 37 px de haut, police Luciole 12. Chiffres du moment : 5 h = 34 %, 7 j = 79 % pour 99 % du temps écoulé. Au survol, une infobulle donne le détail (voir en bas).</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Texte seul, sur une ligne</h3>
+      <div class="panel"><div class="ico"></div><div class="ico"></div><div class="sep"></div>
+        <div class="w"><b>5 h</b> <span style="color:#2f6b1f;font-weight:bold">34 %</span> · <b>7 j</b> <span style="color:#2b5a8f;font-weight:bold">79 %</span></div>
+        <div class="sep"></div><div class="ico"></div><div class="clock">jeu, 26 nov 2026<br>13:07:12</div></div>
+      <p class="note">Le plus lisible, le plus étroit. Pas de trait de rythme : on le perd.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Deux lignes empilées, comme l’horloge</h3>
+      <div class="panel"><div class="ico"></div><div class="ico"></div><div class="sep"></div>
+        <div class="w two"><span><b>5 h</b> <span style="color:#2f6b1f;font-weight:bold">34 %</span> <span style="opacity:.75">→ 13 h 40</span></span><span><b>7 j</b> <span style="color:#2b5a8f;font-weight:bold">79 %</span> <span style="opacity:.75">→ jeu 14 h</span></span></div>
+        <div class="sep"></div><div class="ico"></div><div class="clock">jeu, 26 nov 2026<br>13:07:12</div></div>
+      <p class="note">Ajoute l’heure de réinitialisation sans survol. Plus large.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Deux mini-barres empilées, comme le widget Conky</h3>
+      <div class="panel"><div class="ico"></div><div class="ico"></div><div class="sep"></div>
+        <div class="w" style="gap:6px">
+          <div class="two" style="font-weight:bold;font-size:11px"><span>5 h</span><span>7 j</span></div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div class="bar" style="width:70px;height:9px"><div class="fill" style="width:34%;background:#a3be8c"></div></div>
+            <div class="bar" style="width:70px;height:9px"><div class="fill" style="width:79%;background:#5e81ac"></div><div class="mark" style="left:68px"></div></div>
+          </div>
+          <div class="two" style="font-size:11px;font-weight:bold"><span>34 %</span><span>79 %</span></div>
+        </div>
+        <div class="sep"></div><div class="ico"></div><div class="clock">jeu, 26 nov 2026<br>13:07:12</div></div>
+      <p class="note">Mêmes couleurs que Conky, avec le trait de rythme sur 7 j. Le plus riche ; demande que le script dessine une petite image.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="d" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="content">
+      <h3>Deux jauges verticales, comme le moniteur réseau</h3>
+      <div class="panel"><div class="ico"></div><div class="ico"></div><div class="sep"></div>
+        <div class="w" style="gap:3px;align-items:flex-end;height:28px">
+          <div class="bar" style="width:7px;height:28px"><div class="fill" style="top:auto;height:34%;width:100%;background:#a3be8c"></div></div>
+          <div class="bar" style="width:7px;height:28px"><div class="fill" style="top:auto;height:79%;width:100%;background:#5e81ac"></div></div>
+        </div>
+        <div class="sep"></div><div class="ico"></div><div class="clock">jeu, 26 nov 2026<br>13:07:12</div></div>
+      <p class="note">Minuscule, aucun chiffre : on lit d’un coup d’œil le niveau et la couleur, le détail au survol.</p>
+    </div>
+  </div>
+
+</div>
+
+<h3>Infobulle au survol (commune à toutes les options)</h3>
+<div class="tip"><b>Claude Code — forfait Pro</b><br>
+5 h : 34 % · réinitialisation à 13 h 40 (dans 33 min)<br>
+7 j : 79 % · 99 % du temps écoulé · rythme tenu<br>
+réinitialisation jeudi à 14 h (dans 53 min)<br>
+<span style="opacity:.7">mis à jour à 13:06</span></div>
