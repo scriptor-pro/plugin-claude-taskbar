@@ -9,7 +9,7 @@ la barre et Conky affichent toujours la même chose.
 
 ## Prérequis
 
-- Le widget Conky Claude Code installé (`~/.local/share/claude-monitor/query.py` et le service `claude-monitor`).
+- Le widget Conky Claude Code dans sa version française, [scriptor-pro/ConkyClaudeCode](https://github.com/scriptor-pro/ConkyClaudeCode) : elle fournit le service `claude-monitor` et `~/.local/share/claude-monitor/query.py` avec le calcul du rythme hebdomadaire. La version d'origine (ideops832/ConkyClaudeCode) n'a pas ces fonctions.
 - `xfce4-genmon-plugin` et `python3-cairo`.
 
 ## Installation
