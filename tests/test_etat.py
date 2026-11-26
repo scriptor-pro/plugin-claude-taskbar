@@ -43,7 +43,10 @@ class TestEtat(unittest.TestCase):
         self.assertAlmostEqual(b.trait, 50.0, places=1)
 
     def test_7j_trop_rapide(self):
-        self.assertEqual(self.calc(etat_base(usage_7d=51)).barre_7j.couleur, hex_vers_rgb("d35400"))
+        self.assertEqual(self.calc(etat_base(usage_7d=56)).barre_7j.couleur, hex_vers_rgb("d35400"))
+
+    def test_7j_dans_la_tolerance(self):
+        self.assertEqual(self.calc(etat_base(usage_7d=55)).barre_7j.couleur, hex_vers_rgb("5e81ac"))
 
     def test_texte_pourcentage(self):
         b = self.calc(etat_base(usage_5h=38.4)).barre_5h

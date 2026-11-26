@@ -34,8 +34,8 @@ class TestInfobulle(unittest.TestCase):
         self.assertTrue(ligne.endswith("rythme tenu"))
 
     def test_rythme_trop_rapide(self):
-        ligne = self.lignes(etat_base(usage_7d=51))[2]
-        self.assertTrue(ligne.startswith("7 j : 51 % · 50 % du temps écoulé"))
+        ligne = self.lignes(etat_base(usage_7d=56))[2]
+        self.assertTrue(ligne.startswith("7 j : 56 % · 50 % du temps écoulé"))
         self.assertTrue(ligne.endswith("rythme trop rapide"))
 
     def test_ligne_reinit_7j(self):
