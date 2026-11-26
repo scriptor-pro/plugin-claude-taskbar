@@ -32,8 +32,8 @@ Cela crée la commande `~/.local/bin/claude-barre-quotas`. Ensuite, dans le tabl
 | Élément | Signification |
 |---|---|
 | Barre 5 h verte / jaune / rouge | moins de 60 % / moins de 85 % / au-delà |
-| Barre 7 j bleue | consommation au rythme du temps écoulé ou en dessous |
-| Barre 7 j orange | consommation plus rapide que le temps écoulé |
+| Barre 7 j bleue | consommation au plus 5 points au-dessus du temps écoulé |
+| Barre 7 j orange | consommation de plus de 5 points au-dessus du temps écoulé |
 | Trait sombre sur la barre 7 j | part de la semaine déjà écoulée |
 | Barres et chiffres gris | données de plus de 15 minutes : chiffres non actuels |
 | Barre grise et « – » | réinitialisation passée, en attente des nouvelles données |

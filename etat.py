@@ -4,6 +4,7 @@ Les seuils, le rythme et le temps écoulé viennent de ConkyQuery (query.py du w
 pour que la barre des tâches et Conky ne divergent jamais.
 """
 
+import math
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -11,7 +12,7 @@ from pathlib import Path
 
 DOSSIER_MONITOR = Path.home() / ".local/share/claude-monitor"
 if str(DOSSIER_MONITOR) not in sys.path:
-    sys.path.insert(0, str(DOSSIER_MONITOR))
+    sys.path.append(str(DOSSIER_MONITOR))
 
 from query import ConkyQuery  # noqa: E402
 
@@ -69,9 +70,15 @@ def lire_iso(texte) -> datetime | None:
     """Lit une date ISO ; une date sans fuseau est interprétée en heure locale."""
     try:
         dt = datetime.fromisoformat(str(texte).replace("Z", "+00:00"))
-    except (TypeError, ValueError):
+        return dt if dt.tzinfo else dt.astimezone()
+    except (TypeError, ValueError, OverflowError, OSError):
         return None
-    return dt if dt.tzinfo else dt.astimezone()
+
+
+def reset_avec_fuseau(reset_iso: str | None) -> str | None:
+    """Ajoute le fuseau local à une date de réinitialisation qui n'en a pas (query.py en a besoin)."""
+    dt = lire_iso(reset_iso) if reset_iso else None
+    return dt.isoformat() if dt else reset_iso
 
 
 def reinit_depassee(reset_iso: str | None, maintenant: datetime) -> bool:
@@ -85,7 +92,7 @@ def est_perime(etat: dict, maintenant: datetime) -> bool:
 
 
 def est_nombre(valeur) -> bool:
-    return isinstance(valeur, (int, float)) and not isinstance(valeur, bool)
+    return isinstance(valeur, (int, float)) and not isinstance(valeur, bool) and math.isfinite(valeur)
 
 
 def calculer_affichage(etat: dict | None, maintenant: datetime, q: ConkyQuery) -> Affichage:
@@ -109,7 +116,7 @@ def calculer_affichage(etat: dict | None, maintenant: datetime, q: ConkyQuery) -
     if reinit_depassee(r7, maintenant):
         b7 = BARRE_VIDE
     else:
-        ecoule = q.elapsed_7d_percent(r7, maintenant)
+        ecoule = q.elapsed_7d_percent(reset_avec_fuseau(r7), maintenant)
         b7 = Barre(borner(u7), texte_pourcentage(u7), COULEURS_CONKY[q.pace_color(u7, ecoule)], False, ecoule)
 
     return Affichage(b5, b7, "normal")

@@ -71,8 +71,8 @@ DPI 96), lisible d'un coup d'œil, avec le détail au survol.
 | Barre 5 h | < 60 % | vert `a3be8c` (color3) |
 | | < 85 % | jaune `ebcb8b` (color2) |
 | | sinon | rouge `bf616a` (color5) |
-| Barre 7 j | conso ≤ temps écoulé, ou temps écoulé inconnu | bleu `5e81ac` (color8) |
-| | conso > temps écoulé | orange `d35400` (color7) |
+| Barre 7 j | conso ≤ temps écoulé + 5 points, ou temps écoulé inconnu | bleu `5e81ac` (color8) |
+| | conso > temps écoulé + 5 points (tolérance ajoutée le 2026-11-26 dans query.py, Conky compris) | orange `d35400` (color7) |
 | Trait 7 j | position = % de temps écoulé sur 7 j ; absent si inconnu | anthracite `2e3440`, 2 px |
 
 Les seuils et la règle de rythme viennent **de `ConkyQuery`** (on appelle ses méthodes) ; le script ne

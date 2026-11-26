@@ -98,6 +98,32 @@ class TestEtat(unittest.TestCase):
         del etat["timestamp"]
         self.assertEqual(self.calc(etat).statut, "perime")
 
+    def test_timestamp_aberrant_perime(self):
+        self.assertEqual(self.calc(etat_base(timestamp="0001-01-01T00:00:00")).statut, "perime")
+
+    def test_indisponible_nan(self):
+        self.verifier_indisponible(self.calc(etat_base(usage_5h=float("nan"))))
+
+    def test_indisponible_infini(self):
+        self.verifier_indisponible(self.calc(etat_base(usage_7d=float("inf"))))
+
+    def test_reset_7j_sans_fuseau(self):
+        reset = (MAINTENANT + timedelta(hours=84)).replace(tzinfo=None).isoformat()
+        self.assertAlmostEqual(self.calc(etat_base(reset_7d=reset)).barre_7j.trait, 50.0, places=1)
+
+    def test_dossier_monitor_apres_le_depot(self):
+        """Le dossier de claude-monitor ne doit pas passer devant le dépôt dans le chemin d'import
+        (un fichier etat.py ou dessin.py posé là-bas masquerait le nôtre). Processus séparé :
+        les autres modules de test modifient sys.path."""
+        import subprocess
+        import sys
+        from pathlib import Path
+        racine = str(Path(__file__).resolve().parent.parent)
+        code = ("import sys; sys.path.insert(0, %r); import etat; "
+                "print(sys.path.index(str(etat.DOSSIER_MONITOR)) > sys.path.index(%r))") % (racine, racine)
+        sortie = subprocess.run([sys.executable, "-I", "-c", code], capture_output=True, text=True, check=True)
+        self.assertEqual(sortie.stdout.strip(), "True")
+
     def test_timestamp_futur_frais(self):
         self.assertEqual(self.calc(etat_base(timestamp=horodatage(timedelta(minutes=10)))).statut, "normal")
 

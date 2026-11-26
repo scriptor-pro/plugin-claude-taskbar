@@ -2,14 +2,18 @@
 
 from datetime import datetime
 
-from etat import Affichage, ConkyQuery, reinit_depassee, texte_pourcentage
+from etat import Affichage, ConkyQuery, lire_iso, reinit_depassee, reset_avec_fuseau, texte_pourcentage
 
 FORFAITS = {"pro": "Pro", "max_5x": "Max 5x", "max_20x": "Max 20x"}
 EN_COURS = "réinitialisation en cours…"
 
 
 def heure_maj(etat: dict) -> str:
-    return str(etat.get("last_update") or "inconnue")[:5]
+    """HH:MM de la dernière mise à jour : last_update, sinon timestamp, sinon « inconnue »."""
+    if etat.get("last_update"):
+        return str(etat["last_update"])[:5]
+    ts = lire_iso(etat.get("timestamp")) if etat.get("timestamp") else None
+    return ts.strftime("%H:%M") if ts else "inconnue"
 
 
 def texte_infobulle(etat: dict | None, affichage: Affichage, maintenant: datetime, q: ConkyQuery) -> str:
@@ -35,7 +39,7 @@ def texte_infobulle(etat: dict | None, affichage: Affichage, maintenant: datetim
         lignes.append(f"7 j : {EN_COURS}")
     else:
         ligne = f"7 j : {texte_pourcentage(u7)}"
-        ecoule = q.elapsed_7d_percent(r7, maintenant)
+        ecoule = q.elapsed_7d_percent(reset_avec_fuseau(r7), maintenant)
         if ecoule is not None:
             rythme = "rythme trop rapide" if q.pace_color(u7, ecoule) == "${color7}" else "rythme tenu"
             ligne += f" · {texte_pourcentage(ecoule)} du temps écoulé · {rythme}"

@@ -47,6 +47,21 @@ class TestInfobulle(unittest.TestCase):
     def test_derniere_ligne(self):
         self.assertEqual(self.lignes(etat_base(last_update="12:41:36"))[-1], "mis à jour à 12:41")
 
+    def test_sans_last_update_heure_du_timestamp(self):
+        etat = etat_base()
+        del etat["last_update"]
+        attendu = (MAINTENANT - timedelta(minutes=1)).strftime("%H:%M")
+        self.assertEqual(self.lignes(etat)[-1], f"mis à jour à {attendu}")
+
+    def test_sans_aucune_heure(self):
+        etat = etat_base()
+        del etat["last_update"], etat["timestamp"]
+        self.assertEqual(self.lignes(etat)[0], "Données périmées (dernière mise à jour à inconnue)")
+
+    def test_reset_7j_sans_fuseau_garde_le_rythme(self):
+        reset = (MAINTENANT + timedelta(hours=84)).replace(tzinfo=None).isoformat()
+        self.assertIn("du temps écoulé", self.lignes(etat_base(reset_7d=reset))[2])
+
     def test_reinit_5h_en_cours(self):
         etat = etat_base(reset_5h=(MAINTENANT - timedelta(minutes=1)).isoformat())
         self.assertEqual(self.lignes(etat)[1], "5 h : réinitialisation en cours…")

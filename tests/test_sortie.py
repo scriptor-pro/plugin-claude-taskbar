@@ -25,11 +25,11 @@ class TestSortie(unittest.TestCase):
     def test_chemin_repli_tmp(self):
         env = {k: v for k, v in os.environ.items() if k != "XDG_RUNTIME_DIR"}
         with patch.dict(os.environ, env, clear=True):
-            self.assertEqual(chemin_png(), Path("/tmp/claude-barre-quotas.png"))
+            self.assertEqual(chemin_png(), Path(f"/tmp/claude-barre-quotas-{os.getuid()}.png"))
 
     def test_chemin_xdg_vide(self):
         with patch.dict(os.environ, {"XDG_RUNTIME_DIR": ""}):
-            self.assertEqual(chemin_png(), Path("/tmp/claude-barre-quotas.png"))
+            self.assertEqual(chemin_png(), Path(f"/tmp/claude-barre-quotas-{os.getuid()}.png"))
 
     def test_echappement(self):
         self.assertEqual(sortie_genmon(Path("/x.png"), "a & <b>"),

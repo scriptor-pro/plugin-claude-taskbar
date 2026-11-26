@@ -14,7 +14,11 @@ NOM_PNG = "claude-barre-quotas.png"
 
 
 def chemin_png() -> Path:
-    return Path(os.environ.get("XDG_RUNTIME_DIR") or "/tmp") / NOM_PNG
+    dossier = os.environ.get("XDG_RUNTIME_DIR")
+    if dossier:
+        return Path(dossier) / NOM_PNG
+    # /tmp est partagé : un nom propre à l'utilisateur évite les conflits de droits
+    return Path("/tmp") / f"claude-barre-quotas-{os.getuid()}.png"
 
 
 def sortie_genmon(chemin: Path, infobulle: str) -> str:
