@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quotas Claude Code dans le tableau de bord Xfce</title>
+  <meta name="description" content="Deux mini-barres dans le tableau de bord Xfce pour suivre en permanence les quotas Claude Code sur 5 heures et sur 7 jours.">
+  <link rel="alternate" hreflang="en" href="en/">
+  <link rel="preload" href="assets/luciole-bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="panneau" aria-label="Reproduction d'un tableau de bord Xfce">
+    <span class="icone menu" aria-hidden="true"></span>
+    <span class="icone" aria-hidden="true"></span>
+    <span class="icone" aria-hidden="true"></span>
+    <span class="vide"></span>
+    <canvas id="barre-reelle" class="barre-reelle" role="img" width="156" height="32" style="width:156px;height:32px"></canvas>
+    <span class="icone" aria-hidden="true"></span>
+    <span class="horloge" aria-hidden="true">14:41<br>jeu. 26</span>
+    <nav class="langue" aria-label="Langue">
+      <span aria-current="page" lang="fr">FR</span>
+      <a href="en/" hreflang="en" lang="en">EN</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Vos quotas Claude Code, toujours en vue</h1>
+    <p class="chapo">Deux mini-barres dans le tableau de bord Xfce : la fenêtre de 5 heures en haut, la semaine en bas. Plus besoin de dégager le bureau pour savoir où vous en êtes.</p>
+    <p>La barre ci-dessus, dans le tableau de bord, est le vrai rendu à taille réelle. Faites varier les réglages pour voir comment elle réagit.</p>
+
+    <section class="demo" aria-labelledby="titre-demo">
+      <h2 id="titre-demo" style="margin:0">Essayer la barre</h2>
+      <div>
+        <div class="loupe">
+          <canvas id="loupe" role="img" width="624" height="128"></canvas>
+        </div>
+        <p class="infobulle" id="infobulle" aria-live="polite"></p>
+      </div>
+
+      <form id="reglages" class="reglages">
+        <div class="reglage">
+          <label for="u5">Utilisation sur 5 heures <output for="u5"></output></label>
+          <input type="range" id="u5" name="u5" min="0" max="110" value="38">
+        </div>
+        <div class="reglage">
+          <label for="u7">Utilisation sur 7 jours <output for="u7"></output></label>
+          <input type="range" id="u7" name="u7" min="0" max="110" value="62">
+        </div>
+        <div class="reglage">
+          <label for="el">Part de la semaine écoulée <output for="el"></output></label>
+          <input type="range" id="el" name="el" min="0" max="100" value="55">
+        </div>
+        <fieldset>
+          <legend>État des données</legend>
+          <div class="choix">
+            <label><input type="radio" name="etat" value="normal" checked> À jour</label>
+            <label><input type="radio" name="etat" value="perime"> Plus de 15 min</label>
+            <label><input type="radio" name="etat" value="reinit"> Réinitialisation 5 h passée</label>
+            <label><input type="radio" name="etat" value="indispo"> Indisponibles</label>
+          </div>
+        </fieldset>
+      </form>
+    </section>
+
+    <h2>Lire la barre</h2>
+    <table>
+      <thead><tr><th scope="col">Ce que vous voyez</th><th scope="col">Ce que ça veut dire</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pastille vert"></span><span class="pastille jaune"></span><span class="pastille rouge"></span></td><td>Barre 5 h : moins de 60 %, moins de 85 %, au-delà.</td></tr>
+        <tr><td><span class="pastille bleu"></span></td><td>Barre 7 j : vous consommez au rythme de la semaine, avec 5 points de marge.</td></tr>
+        <tr><td><span class="pastille orange"></span></td><td>Barre 7 j : vous consommez plus vite que la semaine ne passe.</td></tr>
+        <tr><td><span class="pastille bleu trait"></span></td><td>Le trait sombre marque la part de la semaine déjà écoulée.</td></tr>
+        <tr><td><span class="pastille gris"></span></td><td>Données de plus de 15 minutes : les chiffres ne sont plus actuels.</td></tr>
+        <tr><td><span class="pastille"></span> –</td><td>Réinitialisation passée, en attente des nouveaux chiffres ; ou données indisponibles.</td></tr>
+      </tbody>
+    </table>
+    <p>Au survol, une infobulle donne le détail : forfait, heures de réinitialisation, temps restant, rythme de la semaine et heure de la dernière mise à jour.</p>
+
+    <h2>Installer</h2>
+    <ol class="etapes">
+      <li>
+        <p>Installez <strong>claude-monitor</strong>, le service du widget <a href="https://github.com/ideops832/ConkyClaudeCode">Conky Claude Code</a>. Il interroge votre compte toutes les 5 minutes et écrit les chiffres dans <code>~/.local/share/claude-monitor/current.json</code>. La barre lit ce fichier et réutilise son <code>query.py</code>, dans la version qui calcule le rythme de la semaine.</p>
+      </li>
+      <li>
+        <p>Installez le greffon genmon et Cairo pour Python :</p>
+        <pre><code>sudo apt install xfce4-genmon-plugin python3-cairo</code></pre>
+      </li>
+      <li>
+        <p>Récupérez ce projet et installez la commande <code>claude-barre-quotas</code> :</p>
+        <pre><code>git clone https://github.com/scriptor-pro/plugin-claude-taskbar.git
+cd plugin-claude-taskbar
+./install.sh</code></pre>
+      </li>
+      <li>
+        <p>Clic droit sur le tableau de bord, <em>Tableau de bord</em>, <em>Ajouter de nouveaux éléments</em> : ajoutez un <strong>Moniteur générique</strong> et placez-le où vous voulez. Dans ses propriétés, indiquez la commande avec son chemin complet, par exemple <code>/home/vous/.local/bin/claude-barre-quotas</code>, décochez <em>Étiquette</em> et réglez la période sur 60 secondes.</p>
+      </li>
+    </ol>
+    <p>La police des barres est <a href="https://www.luciole-vision.com/">Luciole</a>, conçue pour les personnes malvoyantes. Installez-la pour obtenir le même rendu.</p>
+  </main>
+
+  <footer>
+    <p>Code source et suivi : <a href="https://github.com/scriptor-pro/plugin-claude-taskbar">github.com/scriptor-pro/plugin-claude-taskbar</a>. Fonctionne avec Xfce 4 et xfce4-genmon-plugin 4.1. Police Luciole © Laurent Bourcellier et Jonathan Perez, licence CC BY 4.0.</p>
+  </footer>
+
+  <script src="assets/demo.js"></script>
+</body>
+</html>

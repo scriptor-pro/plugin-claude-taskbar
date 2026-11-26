@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Code quotas in the Xfce panel</title>
+  <meta name="description" content="Two mini bars in the Xfce panel that keep your Claude Code 5-hour and 7-day quotas always in view.">
+  <link rel="alternate" hreflang="fr" href="../">
+  <link rel="preload" href="../assets/luciole-bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <header class="panneau" aria-label="Replica of an Xfce panel">
+    <span class="icone menu" aria-hidden="true"></span>
+    <span class="icone" aria-hidden="true"></span>
+    <span class="icone" aria-hidden="true"></span>
+    <span class="vide"></span>
+    <canvas id="barre-reelle" class="barre-reelle" role="img" width="156" height="32" style="width:156px;height:32px"></canvas>
+    <span class="icone" aria-hidden="true"></span>
+    <span class="horloge" aria-hidden="true">14:41<br>Thu 26</span>
+    <nav class="langue" aria-label="Language">
+      <a href="../" hreflang="fr" lang="fr">FR</a>
+      <span aria-current="page" lang="en">EN</span>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Your Claude Code quotas, always in view</h1>
+    <p class="chapo">Two mini bars in the Xfce panel: the 5-hour window on top, the week below. No more clearing your desktop to check where you stand.</p>
+    <p>The bar in the panel above is the real rendering, at actual size. Move the controls to see how it reacts.</p>
+
+    <section class="demo" aria-labelledby="titre-demo">
+      <h2 id="titre-demo" style="margin:0">Try the bar</h2>
+      <div>
+        <div class="loupe">
+          <canvas id="loupe" role="img" width="624" height="128"></canvas>
+        </div>
+        <p class="infobulle" id="infobulle" aria-live="polite"></p>
+      </div>
+
+      <form id="reglages" class="reglages">
+        <div class="reglage">
+          <label for="u5">5-hour usage <output for="u5"></output></label>
+          <input type="range" id="u5" name="u5" min="0" max="110" value="38">
+        </div>
+        <div class="reglage">
+          <label for="u7">7-day usage <output for="u7"></output></label>
+          <input type="range" id="u7" name="u7" min="0" max="110" value="62">
+        </div>
+        <div class="reglage">
+          <label for="el">Share of the week elapsed <output for="el"></output></label>
+          <input type="range" id="el" name="el" min="0" max="100" value="55">
+        </div>
+        <fieldset>
+          <legend>Data state</legend>
+          <div class="choix">
+            <label><input type="radio" name="etat" value="normal" checked> Up to date</label>
+            <label><input type="radio" name="etat" value="perime"> Older than 15 min</label>
+            <label><input type="radio" name="etat" value="reinit"> 5-hour reset passed</label>
+            <label><input type="radio" name="etat" value="indispo"> Unavailable</label>
+          </div>
+        </fieldset>
+      </form>
+    </section>
+
+    <h2>Reading the bar</h2>
+    <table>
+      <thead><tr><th scope="col">What you see</th><th scope="col">What it means</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pastille vert"></span><span class="pastille jaune"></span><span class="pastille rouge"></span></td><td>5-hour bar: under 60 %, under 85 %, above.</td></tr>
+        <tr><td><span class="pastille bleu"></span></td><td>7-day bar: you are using your quota at the pace of the week, with a 5-point margin.</td></tr>
+        <tr><td><span class="pastille orange"></span></td><td>7-day bar: you are using your quota faster than the week goes by.</td></tr>
+        <tr><td><span class="pastille bleu trait"></span></td><td>The dark mark shows how much of the week has already passed.</td></tr>
+        <tr><td><span class="pastille gris"></span></td><td>Data older than 15 minutes: the numbers are no longer current.</td></tr>
+        <tr><td><span class="pastille"></span> –</td><td>A reset has passed and new numbers are on their way; or data is unavailable.</td></tr>
+      </tbody>
+    </table>
+    <p>Hover over the bar for details: plan, reset times, time left, weekly pace and the time of the last update.</p>
+    <p>The bar itself is in French, like the Conky widget it builds on: it reads <em>5 h</em> and <em>7 j</em> (7 jours), and its tooltip is in French. The tooltip on this page is translated.</p>
+
+    <h2>Install</h2>
+    <ol class="etapes">
+      <li>
+        <p>Install <strong>claude-monitor</strong>, the service behind the <a href="https://github.com/ideops832/ConkyClaudeCode">Conky Claude Code</a> widget. It checks your account every 5 minutes and writes the numbers to <code>~/.local/share/claude-monitor/current.json</code>. The bar reads that file and reuses its <code>query.py</code>, in the version that computes the weekly pace.</p>
+      </li>
+      <li>
+        <p>Install the genmon plugin and Cairo for Python:</p>
+        <pre><code>sudo apt install xfce4-genmon-plugin python3-cairo</code></pre>
+      </li>
+      <li>
+        <p>Get this project and install the <code>claude-barre-quotas</code> command:</p>
+        <pre><code>git clone https://github.com/scriptor-pro/plugin-claude-taskbar.git
+cd plugin-claude-taskbar
+./install.sh</code></pre>
+      </li>
+      <li>
+        <p>Right-click the panel, <em>Panel</em>, <em>Add New Items</em>: add a <strong>Generic Monitor</strong> and place it where you like. In its properties, enter the command with its full path, for example <code>/home/you/.local/bin/claude-barre-quotas</code>, untick <em>Label</em> and set the period to 60 seconds.</p>
+      </li>
+    </ol>
+    <p>The bars use <a href="https://www.luciole-vision.com/">Luciole</a>, a typeface designed for people with low vision. Install it to get the same rendering.</p>
+  </main>
+
+  <footer>
+    <p>Source code and issues: <a href="https://github.com/scriptor-pro/plugin-claude-taskbar">github.com/scriptor-pro/plugin-claude-taskbar</a>. Works with Xfce 4 and xfce4-genmon-plugin 4.1. Luciole typeface © Laurent Bourcellier and Jonathan Perez, CC BY 4.0 licence.</p>
+  </footer>
+
+  <script src="../assets/demo.js"></script>
+</body>
+</html>

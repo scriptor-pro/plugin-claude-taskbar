@@ -1,0 +1,242 @@
+/* Luciole — © Laurent Bourcellier & Jonathan Perez, CC BY 4.0, https://www.luciole-vision.com */
+@font-face {
+  font-family: "Luciole";
+  src: url("luciole-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Luciole";
+  src: url("luciole-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --neige: #eceff4;
+  --ardoise: #2e3440;
+  --ardoise-douce: #4c566a;
+  --lien: #3b5f8a;
+  --panneau-haut: #b4b4b4;
+  --panneau-bas: #9c9c9c;
+  --vert: #a3be8c;
+  --jaune: #ebcb8b;
+  --rouge: #bf616a;
+  --bleu: #5e81ac;
+  --orange: #d35400;
+  --filet: #d8dee9;
+  --mesure: 40rem;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  font-family: "Luciole", system-ui, sans-serif;
+  font-size: 106.25%; /* 17 px : Luciole est large, on garde ~65 caractères par ligne */
+  line-height: 1.55;
+  color: var(--ardoise);
+  background: var(--neige);
+}
+
+body { margin: 0; }
+
+a { color: var(--lien); text-underline-offset: 0.15em; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 3px solid var(--lien);
+  outline-offset: 2px;
+}
+
+/* ---------- Le tableau de bord ---------- */
+
+.panneau {
+  height: 37px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  background: linear-gradient(var(--panneau-haut), var(--panneau-bas));
+  border-bottom: 1px solid #7a7a7a;
+  font-size: 12px;
+  color: #111;
+}
+.panneau .icone {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: #6d6d6d;
+  opacity: 0.5;
+  flex: none;
+}
+.panneau .menu { background: var(--ardoise); opacity: 0.85; }
+.panneau .vide { flex: 1; }
+.panneau .barre-reelle { display: block; flex: none; }
+.panneau .horloge { line-height: 1.05; text-align: center; }
+.panneau .langue {
+  display: flex;
+  border: 1px solid #6d6d6d;
+  border-radius: 3px;
+  overflow: hidden;
+  font-weight: 700;
+}
+.panneau .langue a,
+.panneau .langue span {
+  padding: 1px 6px;
+  color: #111;
+  text-decoration: none;
+}
+.panneau .langue [aria-current] { background: var(--ardoise); color: var(--neige); }
+
+/* ---------- Contenu ---------- */
+
+main {
+  max-width: var(--mesure);
+  margin: 0 auto;
+  padding: 3.5rem 1.25rem 4rem;
+}
+
+h1 {
+  font-size: 2.35rem;
+  line-height: 1.12;
+  margin: 0 0 1rem;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-size: 1.45rem;
+  line-height: 1.2;
+  margin: 3.25rem 0 0.75rem;
+}
+p, ol, table { margin: 0 0 1rem; }
+.chapo { font-size: 1.2rem; color: var(--ardoise-douce); max-width: 34rem; }
+
+code {
+  font-family: "Luciole", monospace;
+  font-weight: 700;
+  font-size: 0.92em;
+  background: #e1e6ee;
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+}
+pre {
+  background: var(--ardoise);
+  color: var(--neige);
+  padding: 0.9rem 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+pre code { background: none; padding: 0; color: inherit; font-weight: 400; }
+
+/* ---------- La démonstration ---------- */
+
+.demo {
+  margin: 2.5rem 0 0;
+  display: grid;
+  gap: 1.5rem;
+}
+.loupe {
+  background: linear-gradient(var(--panneau-haut), var(--panneau-bas));
+  border-radius: 6px;
+  padding: 1rem;
+}
+.loupe canvas { display: block; width: 100%; height: auto; }
+
+.infobulle {
+  background: var(--ardoise);
+  color: #d8dee9;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding: 0.6rem 0.8rem;
+  border-radius: 4px;
+  width: max-content;
+  max-width: 100%;
+  white-space: pre-line;
+  margin: 0.75rem 0 0;
+  position: relative;
+}
+.infobulle::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 2rem;
+  border: 6px solid transparent;
+  border-top: 0;
+  border-bottom-color: var(--ardoise);
+}
+
+.reglages { display: grid; gap: 1rem; }
+.reglage label { display: flex; justify-content: space-between; font-weight: 700; }
+.reglage output { font-variant-numeric: tabular-nums; }
+.reglage input[type="range"] { width: 100%; accent-color: var(--ardoise); margin: 0.35rem 0 0; }
+
+fieldset { border: 0; padding: 0; margin: 0; }
+legend { font-weight: 700; padding: 0; margin-bottom: 0.35rem; }
+.choix { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.choix label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid #b7c0cd;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.92rem;
+}
+.choix input { accent-color: var(--ardoise); margin: 0; }
+.choix label:has(input:checked) { border-color: var(--ardoise); background: #e1e6ee; }
+
+.reglages { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); column-gap: 2rem; }
+.reglages fieldset { grid-column: 1 / -1; }
+
+/* ---------- Légende ---------- */
+
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.5rem 0.55rem 0; border-bottom: 1px solid var(--filet); }
+th { font-weight: 700; }
+td:first-child, th:first-child { white-space: nowrap; padding-right: 1.25rem; }
+.pastille {
+  display: inline-block;
+  width: 2.2rem;
+  height: 0.7rem;
+  border: 1px solid #1a1a1a;
+  background: #555;
+  vertical-align: 0.05em;
+  margin-right: 0.5rem;
+  position: relative;
+}
+.pastille.vert { background: var(--vert); }
+.pastille.jaune { background: var(--jaune); }
+.pastille.rouge { background: var(--rouge); }
+.pastille.bleu { background: var(--bleu); }
+.pastille.orange { background: var(--orange); }
+.pastille.gris { background: #8c8c8c; }
+.pastille.trait::after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  top: -2px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--ardoise);
+}
+
+ol.etapes { padding-left: 1.4rem; }
+ol.etapes li { margin-bottom: 1.1rem; }
+ol.etapes li::marker { font-weight: 700; }
+
+footer {
+  max-width: var(--mesure);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+  border-top: 1px solid var(--filet);
+  font-size: 0.9rem;
+  color: var(--ardoise-douce);
+}
+
+@media (max-width: 30rem) {
+  html { font-size: 100%; }
+  h1 { font-size: 1.9rem; }
+  .panneau .icone:not(.menu), .panneau .horloge { display: none; }
+}
